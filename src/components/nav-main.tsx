@@ -1,0 +1,122 @@
+"use client";
+
+import { ChevronRight, type LucideIcon } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
+import Link from "next/link";
+
+export function NavMain({
+  items,
+  currentPath, // Current path passed from parent component
+}: {
+  items: {
+    title: string;
+    url: string;
+    icon: LucideIcon;
+    isActive?: boolean;
+    items?: {
+      title: string;
+      url: string;
+    }[];
+  }[];
+  currentPath: string;
+}) {
+  // Function to check if a route is active
+  const isActive = (url: string) => {
+    // Exact matches for top-level routes
+    if (url === "/dashboard" && currentPath === "/dashboard") {
+      return true;
+    }
+    if (url === "/dashboard/explore" && currentPath === "/dashboard/explore") {
+      return true;
+    }
+    if (
+      url === "/dashboard/settings" &&
+      currentPath === "/dashboard/settings"
+    ) {
+      return true;
+    }
+    if (url === "/dashboard/wallet" && currentPath === "/dashboard/wallet") {
+      return true;
+    }
+
+    // For nested or sub-routes (e.g., /dashboard/settings)
+    if (url.startsWith("/dashboard") && currentPath.startsWith(url)) {
+      return false; // Don't highlight top-level item when on a nested route
+    }
+
+    return currentPath.startsWith(url);
+  };
+
+  return (
+    <SidebarGroup>
+      <SidebarMenu>
+        {items.map((item) => (
+          <Collapsible
+            key={item.title}
+            asChild
+            defaultOpen={isActive(item.url)}
+          >
+            <SidebarMenuItem
+              className={`rounded-lg ${
+                isActive(item.url)
+                  ? "bg-muted text-foreground dark:bg-muted"
+                  : "hover:bg-muted/90 dark:hover:bg-muted/40"
+              }`}
+            >
+              <SidebarMenuButton asChild tooltip={item.title}>
+                <Link href={item.url} className="flex items-center space-x-2">
+                  <item.icon />
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+              {item.items?.length ? (
+                <>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuAction className="data-[state=open]:rotate-90">
+                      <ChevronRight />
+                      <span className="sr-only">Toggle</span>
+                    </SidebarMenuAction>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {item.items.map((subItem) => (
+                        <SidebarMenuSubItem
+                          key={subItem.title}
+                          className={`rounded-lg ${
+                            isActive(subItem.url)
+                              ? "bg-muted-foreground text-foreground dark:bg-muted"
+                              : "hover:bg-muted dark:hover:bg-muted/40"
+                          }`}
+                        >
+                          <SidebarMenuSubButton asChild>
+                            <Link href={subItem.url}>
+                              <span>{subItem.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </>
+              ) : null}
+            </SidebarMenuItem>
+          </Collapsible>
+        ))}
+      </SidebarMenu>
+    </SidebarGroup>
+  );
+}

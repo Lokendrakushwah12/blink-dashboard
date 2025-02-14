@@ -1,1 +1,1 @@
-# blink-dashboard
+# Blink Dashboard
