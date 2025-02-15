@@ -1,13 +1,16 @@
 "use client";
 
 import {
-  Bitcoin,
+  DollarSign,
+  Earth,
   Flower,
   LifeBuoy,
+  MessageSquareWarning,
+  PanelsLeftBottom,
   Send,
-  Settings2,
-  Telescope,
-  Wallet,
+  Settings,
+  Tickets,
+  User2,
 } from "lucide-react";
 import * as React from "react";
 
@@ -33,27 +36,27 @@ const data = {
   },
   navMain: [
     {
-      title: "Dashboard",
+      title: "Overview",
       url: "/dashboard",
-      icon: Bitcoin,
+      icon: PanelsLeftBottom,
       items: [],
     },
     {
-      title: "Explore",
-      url: "/dashboard/explore",
-      icon: Telescope,
+      title: "User",
+      url: "/dashboard/user",
+      icon: User2,
       items: [],
     },
     {
-      title: "Wallet",
-      url: "/dashboard/wallet",
-      icon: Wallet,
+      title: "Revenue",
+      url: "/dashboard/revenue",
+      icon: DollarSign,
       items: [],
     },
     {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: Settings2,
+      title: "World",
+      url: "/dashboard/world",
+      icon: Earth,
       items: [
         // { title: "General", url: "/dashboard/settings/general" },
         // { title: "Team", url: "/dashboard/settings/team" },
@@ -61,18 +64,33 @@ const data = {
         // { title: "Limits", url: "/dashboard/settings/limits" },
       ],
     },
+    {
+      title: "Reports",
+      url: "/dashboard/reports",
+      icon: MessageSquareWarning,
+      items: [],
+    },
+    {
+      title: "Tickets",
+      url: "/dashboard/tickets",
+      icon: Tickets,
+      items: [],
+    },
   ],
-  navSecondary: [
-    { title: "Support", url: "#", icon: LifeBuoy },
-    { title: "Feedback", url: "#", icon: Send },
+  secondary: [
+    {
+      title: "Settings",
+      url: "/dashboard/settings",
+      icon: Settings,
+    },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [sideBarUser, setSideBarUser] = React.useState({
-    name: "",
-    email: "",
-    avatar: "",
+    name: "Lokendra",
+    email: "Lokendrakushwah8051@gmail.com",
+    avatar: "https://avatars.githubusercontent.com/u/118094744",
   });
 
   const pathname = usePathname();
@@ -88,7 +106,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Flower strokeWidth={1.5} className="h-6 w-auto text-white" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Blink Dashboard</span>
+                  <span className="truncate font-semibold">
+                    Blink Dashboard
+                  </span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -97,9 +117,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        {/* Main Navigation Items */}
         <NavMain items={data.navMain} currentPath={pathname} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavSecondary items={data.secondary} />
       </SidebarContent>
 
       <SidebarFooter>
