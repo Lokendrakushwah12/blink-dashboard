@@ -118,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       <SidebarContent>
         <NavMain items={data.navMain} currentPath={pathname} />
-        <NavSecondary items={data.secondary} />
+        <NavSecondary items={data.secondary} currentPath={pathname} />
       </SidebarContent>
 
       <SidebarFooter>

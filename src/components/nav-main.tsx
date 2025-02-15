@@ -20,7 +20,7 @@ import Link from "next/link";
 
 export function NavMain({
   items,
-  currentPath, // Current path passed from parent component
+  currentPath,
 }: {
   items: {
     title: string;
@@ -34,13 +34,17 @@ export function NavMain({
   }[];
   currentPath: string;
 }) {
-  // Function to check if a route is active
   const isActive = (url: string) => {
-    // Exact matches for top-level routes
     if (url === "/dashboard" && currentPath === "/dashboard") {
       return true;
     }
-    if (url === "/dashboard/explore" && currentPath === "/dashboard/explore") {
+    if (url === "/dashboard/user" && currentPath === "/dashboard/user") {
+      return true;
+    }
+    if (url === "/dashboard/revenue" && currentPath === "/dashboard/revenue") {
+      return true;
+    }
+    if (url === "/dashboard/world" && currentPath === "/dashboard/world") {
       return true;
     }
     if (
@@ -49,7 +53,10 @@ export function NavMain({
     ) {
       return true;
     }
-    if (url === "/dashboard/wallet" && currentPath === "/dashboard/wallet") {
+    if (url === "/dashboard/reports" && currentPath === "/dashboard/reports") {
+      return true;
+    }
+    if (url === "/dashboard/tickets" && currentPath === "/dashboard/tickets") {
       return true;
     }
 
