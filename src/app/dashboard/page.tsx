@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Tickets } from "lucide-react";
 import Sales from "./@sales/page";
-import WorldStats from "./@world_stats/page";
+import WorldStats from "./@gender_stats/page";
+import GenderStats from "./@gender_stats/page";
 
 const DashboardPage = () => {
   return (
@@ -81,7 +82,7 @@ const DashboardPage = () => {
         </Card>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <div className="col-span-4">{WorldStats()}</div>
+        <div className="col-span-4">{GenderStats()}</div>
         <div className="col-span-4 md:col-span-3">{Sales()}</div>
         {/* <div className='col-span-4'>{area_stats}</div> */}
         {/* <div className='col-span-4 md:col-span-3'>{pie_stats}</div> */}

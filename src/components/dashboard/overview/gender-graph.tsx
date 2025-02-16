@@ -37,7 +37,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function WorldGraph() {
+export function GenderGraph() {
   return (
     <Card>
       <CardHeader>

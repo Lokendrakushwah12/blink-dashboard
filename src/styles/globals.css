@@ -105,6 +105,10 @@ html {
   letter-spacing: -0.09px;
 }
 
+* {
+  scrollbar-width: thin;
+}
+
 ::selection {
   background: hsl(var(--primary) / 0.15);
 }
