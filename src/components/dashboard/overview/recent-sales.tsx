@@ -10,7 +10,7 @@ import {
 export function RecentSales() {
   const error = new Error("whoops");
   return (
-    <Card>
+    <Card className="md:pb-7 pb-0">
       <CardHeader>
         <CardTitle>Recent Sales</CardTitle>
         <CardDescription>You made 265 sales this month.</CardDescription>
