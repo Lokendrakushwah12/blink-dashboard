@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +14,7 @@ import { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Track sidebar state
 
   const pageTitle = pathname?.split("/")[2] || "Dashboard";
 
@@ -20,19 +22,32 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <SidebarProvider>
       <div className="flex">
         {/* Sidebar */}
-        <AppSidebar className="w-64 bg-background" />
+        <AppSidebar
+          className={`bg-background transition-all duration-300 ${
+            isSidebarOpen ? "w-64" : "w-0 md:w-0"
+          }`}
+        />
 
-        <SidebarInset className="flex w-screen flex-1 flex-col md:w-[calc(100vw-265px)]">
+        {/* Main Content */}
+        <SidebarInset
+          className={`flex flex-1 flex-col w-screen transition-all duration-300 ${
+            isSidebarOpen ? "md:w-[calc(100vw-265px)]" : ""
+          }`}
+        >
           <header className="flex h-16 shrink-0 items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
+            <button
+              className="-ml-1"
+              onClick={() => setIsSidebarOpen((prev) => !prev)} // Toggle sidebar
+            >
+              <SidebarTrigger />
+            </button>
             <Separator orientation="vertical" className="mr-2 h-4" />
             <div className="flex w-full items-center justify-between">
               <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
-              {/* <ThemeToggle /> */}
             </div>
           </header>
 
-          <div className="flex flex-1 flex-col gap-4 py-6">{children}</div>
+          <div className="flex flex-1 flex-col gap-4 py-2">{children}</div>
         </SidebarInset>
       </div>
     </SidebarProvider>
