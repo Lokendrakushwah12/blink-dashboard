@@ -197,7 +197,7 @@ const UsersTable = () => {
   ];
 
   const handleRowClick = (userId: Number) => {
-    router.push(`/users/${userId}`);
+    router.push(`/dashboard/user/${userId}`);
   };
 
   const handleDelete = (e: any, userId: Number) => {

@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import { useRouter } from "next/router";
+import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,9 +31,9 @@ interface User {
 
 const UserDetails = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = useParams();
 
-  const user:User[] = {
+  const user: User = {
     id: 1,
     name: "John Doe",
     email: "john.doe@example.com",
@@ -53,21 +54,21 @@ const UserDetails = () => {
   const getStatusColor = (status: Status) => {
     switch (status.toLowerCase()) {
       case "active":
-        return "bg-green-100 text-green-800";
+        return "bg-green-600/10 text-green-600";
       case "suspended":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-600/10 text-yellow-600";
       case "blacklisted":
-        return "bg-rose-100 text-rose-800";
+        return "bg-rose-600/10 text-rose-600";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-600/10 text-gray-600";
     }
   };
 
   return (
-    <div className="container mx-auto space-y-6 py-8">
+    <div className="mx-auto w-full space-y-6 px-4">
       <Button
-        variant="ghost"
-        className="flex items-center gap-2"
+        variant="secondary"
+        className="flex items-center gap-2 bg-transparent p-0 hover:bg-transparent hover:underline"
         onClick={() => router.back()}
       >
         <ArrowLeft size={16} />
@@ -135,7 +136,7 @@ const UserDetails = () => {
                 {user.matchHistory.map((match) => (
                   <div
                     key={match.id}
-                    className="flex items-center justify-between rounded-md bg-muted p-2"
+                    className="flex items-center justify-between rounded-md bg-muted/50 p-2"
                   >
                     <span>{match.name}</span>
                     <span className="text-sm text-muted-foreground">
