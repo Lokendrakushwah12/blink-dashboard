@@ -100,7 +100,7 @@ const Join = () => {
             </div>
           </div>
           {error && (
-            <p className="w-full text-left text-sm text-red-500">{error}</p>
+            <p className="w-full text-left text-sm text-rose-500">{error}</p>
           )}
           <Button
             className="w-full text-white"
