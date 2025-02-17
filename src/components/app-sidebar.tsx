@@ -27,6 +27,13 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
+import { CircleDollarSignIcon } from "./ui/circle-dollar-sign";
+import { LayoutPanelTopIcon } from "./ui/layout-panel-top";
+import { SettingsGearIcon } from "./ui/settings-gear";
+import { EarthIcon } from "./ui/earth";
+import { UserIcon } from "./ui/user";
+import { FilePenLineIcon } from "./ui/file-pen-line";
+import { MessageCircleMoreIcon } from "./ui/message-circle-more";
 
 const data = {
   user: {
@@ -38,25 +45,25 @@ const data = {
     {
       title: "Overview",
       url: "/dashboard",
-      icon: PanelsLeftBottom,
+      icon: LayoutPanelTopIcon,
       items: [],
     },
     {
       title: "User",
       url: "/dashboard/user",
-      icon: User2,
+      icon: UserIcon,
       items: [],
     },
     {
       title: "Revenue",
       url: "/dashboard/revenue",
-      icon: DollarSign,
+      icon: CircleDollarSignIcon,
       items: [],
     },
     {
       title: "World",
       url: "/dashboard/world",
-      icon: Earth,
+      icon: EarthIcon,
       items: [
         // { title: "General", url: "/dashboard/settings/general" },
         // { title: "Team", url: "/dashboard/settings/team" },
@@ -67,13 +74,13 @@ const data = {
     {
       title: "Reports",
       url: "/dashboard/reports",
-      icon: MessageSquareWarning,
+      icon: FilePenLineIcon,
       items: [],
     },
     {
       title: "Tickets",
       url: "/dashboard/tickets",
-      icon: Tickets,
+      icon: MessageCircleMoreIcon,
       items: [],
     },
   ],
@@ -81,7 +88,7 @@ const data = {
     {
       title: "Settings",
       url: "/dashboard/settings",
-      icon: Settings,
+      icon: SettingsGearIcon,
     },
   ],
 };

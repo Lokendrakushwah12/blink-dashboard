@@ -17,6 +17,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { useState } from "react";
 
 export function NavMain({
   items,
@@ -25,7 +26,7 @@ export function NavMain({
   items: {
     title: string;
     url: string;
-    icon: LucideIcon;
+    icon: React.ElementType;
     isActive?: boolean;
     items?: {
       title: string;
@@ -78,14 +79,14 @@ export function NavMain({
             defaultOpen={isActive(item.url)}
           >
             <SidebarMenuItem
-              className={`rounded-lg ${
+              className={`rounded-md ${
                 isActive(item.url)
                   ? "bg-muted text-foreground dark:bg-muted"
-                  : "hover:bg-muted/90 dark:hover:bg-muted/40"
+                  : ""
               }`}
             >
               <SidebarMenuButton asChild tooltip={item.title}>
-                <Link href={item.url} className="flex items-center space-x-2">
+                <Link href={item.url} className="flex items-center">
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>

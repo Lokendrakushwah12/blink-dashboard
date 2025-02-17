@@ -17,7 +17,7 @@ export function NavSecondary({
   items: {
     title: string;
     url: string;
-    icon: LucideIcon;
+    icon: React.ElementType;
   }[];
   currentPath: string;
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
