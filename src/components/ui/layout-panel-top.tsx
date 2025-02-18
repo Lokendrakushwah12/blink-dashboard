@@ -1,57 +1,14 @@
-'use client';
-
-import { useAnimation, motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-export interface LayoutPanelTopIconHandle {
-  startAnimation: () => void;
-  stopAnimation: () => void;
+interface LayoutPanelTopIconProps extends HTMLAttributes<HTMLDivElement> {
+  controls: any;
 }
 
-const LayoutPanelTopIcon = forwardRef<
-  LayoutPanelTopIconHandle,
-  HTMLAttributes<HTMLDivElement>
->(({ onMouseEnter, onMouseLeave, ...props }, ref) => {
-  const controls = useAnimation();
-  const isControlledRef = useRef(false);
-
-  useImperativeHandle(ref, () => {
-    isControlledRef.current = true;
-
-    return {
-      startAnimation: () => controls.start('animate'),
-      stopAnimation: () => controls.start('normal'),
-    };
-  });
-
-  const handleMouseEnter = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isControlledRef.current) {
-        controls.start('animate');
-      } else {
-        onMouseEnter?.(e);
-      }
-    },
-    [controls, onMouseEnter]
-  );
-
-  const handleMouseLeave = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isControlledRef.current) {
-        controls.start('normal');
-      } else {
-        onMouseLeave?.(e);
-      }
-    },
-    [controls, onMouseLeave]
-  );
-
+export function LayoutPanelTopIcon({ controls, ...props }: LayoutPanelTopIconProps) {
   return (
     <div
       className="cursor-pointer select-none p-2 rounded-md transition-colors duration-200 flex items-center justify-center"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       {...props}
     >
       <svg
@@ -130,8 +87,4 @@ const LayoutPanelTopIcon = forwardRef<
       </svg>
     </div>
   );
-});
-
-LayoutPanelTopIcon.displayName = 'LayoutPanelTopIcon';
-
-export { LayoutPanelTopIcon };
+}

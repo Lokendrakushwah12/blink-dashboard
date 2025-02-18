@@ -17,7 +17,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useAnimation } from "motion/react";
 
 export function NavMain({
   items,
@@ -72,58 +73,72 @@ export function NavMain({
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible
-            key={item.title}
-            asChild
-            defaultOpen={isActive(item.url)}
-          >
-            <SidebarMenuItem
-              className={`rounded-md ${
-                isActive(item.url)
-                  ? "bg-muted text-foreground dark:bg-muted"
-                  : ""
-              }`}
+        {items.map((item) => {
+          const controls = useAnimation();
+
+          const handleMouseEnter = useCallback(() => {
+            controls.start("animate");
+          }, [controls]);
+
+          const handleMouseLeave = useCallback(() => {
+            controls.start("normal");
+          }, [controls]);
+
+          return (
+            <Collapsible
+              key={item.title}
+              asChild
+              defaultOpen={isActive(item.url)}
             >
-              <SidebarMenuButton asChild tooltip={item.title}>
-                <Link href={item.url} className="flex items-center">
-                  <item.icon />
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-              {item.items?.length ? (
-                <>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="data-[state=open]:rotate-90">
-                      <ChevronRight />
-                      <span className="sr-only">Toggle</span>
-                    </SidebarMenuAction>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items.map((subItem) => (
-                        <SidebarMenuSubItem
-                          key={subItem.title}
-                          className={`rounded-lg ${
-                            isActive(subItem.url)
-                              ? "bg-muted-foreground text-foreground dark:bg-muted"
-                              : "hover:bg-muted dark:hover:bg-muted/40"
-                          }`}
-                        >
-                          <SidebarMenuSubButton asChild>
-                            <Link href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </>
-              ) : null}
-            </SidebarMenuItem>
-          </Collapsible>
-        ))}
+              <SidebarMenuItem
+                className={`rounded-md ${
+                  isActive(item.url)
+                    ? "bg-muted text-foreground dark:bg-muted"
+                    : ""
+                }`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <SidebarMenuButton asChild tooltip={item.title}>
+                  <Link href={item.url} className="flex items-center">
+                    <item.icon controls={controls} />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+                {item.items?.length ? (
+                  <>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuAction className="data-[state=open]:rotate-90">
+                        <ChevronRight />
+                        <span className="sr-only">Toggle</span>
+                      </SidebarMenuAction>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.items.map((subItem) => (
+                          <SidebarMenuSubItem
+                            key={subItem.title}
+                            className={`rounded-lg ${
+                              isActive(subItem.url)
+                                ? "bg-muted-foreground text-foreground dark:bg-muted"
+                                : "hover:bg-muted dark:hover:bg-muted/40"
+                            }`}
+                          >
+                            <SidebarMenuSubButton asChild>
+                              <Link href={subItem.url}>
+                                <span>{subItem.title}</span>
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </>
+                ) : null}
+              </SidebarMenuItem>
+            </Collapsible>
+          );
+        })}
       </SidebarMenu>
     </SidebarGroup>
   );
