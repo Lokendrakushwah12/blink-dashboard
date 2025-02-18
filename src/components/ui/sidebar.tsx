@@ -411,7 +411,7 @@ const SidebarContent = React.forwardRef<
       ref={ref}
       data-sidebar="content"
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-2 justify-between overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "flex min-h-0 flex-1 flex-col justify-between gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
         className,
       )}
       {...props}
@@ -561,7 +561,7 @@ const SidebarMenuButton = React.forwardRef<
     ref,
   ) => {
     const Comp = asChild ? Slot : "button";
-    const { isMobile, state } = useSidebar();
+    const { isMobile, state, setOpenMobile } = useSidebar();
 
     const button = (
       <Comp
@@ -571,6 +571,10 @@ const SidebarMenuButton = React.forwardRef<
         data-active={isActive}
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
         {...props}
+        onClick={(event) => {
+          props.onClick?.(event);
+          if (isMobile) setOpenMobile(false);
+        }}
       />
     );
 
