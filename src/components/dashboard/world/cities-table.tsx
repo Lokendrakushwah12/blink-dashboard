@@ -1,8 +1,13 @@
 "use client";
-import React, { useState, useMemo } from "react";
-import { Search, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -11,7 +16,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsUpDown,
+  Search,
+} from "lucide-react";
+import { useMemo, useState } from "react";
 
+const PAGE_SIZE_OPTIONS = [10, 20, 30] as const;
+type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 interface CityData {
   id: number;
   city: string;
@@ -27,6 +41,8 @@ type SortConfig = {
 };
 
 const CitiesTable = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState<PageSize>(PAGE_SIZE_OPTIONS[0]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: null,
@@ -127,6 +143,21 @@ const CitiesTable = () => {
     return <ChevronsUpDown className="h-3 w-3" />;
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const handlePageSizeChange = (newSize: string) => {
+    const size = parseInt(newSize) as PageSize;
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
+  const totalPages = Math.ceil(sortedCities.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentCities = sortedCities.slice(startIndex, endIndex);
+
   return (
     <div className="w-full space-y-4">
       <h1 className="text-2xl font-bold">Cities Gender Distribution</h1>
@@ -168,7 +199,7 @@ const CitiesTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sortedCities.map((city) => (
+            {currentCities.map((city) => (
               <TableRow key={city.id}>
                 <TableCell className="text-center font-medium">
                   {city.city}
@@ -187,6 +218,50 @@ const CitiesTable = () => {
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <p className="text-sm text-muted-foreground">Rows per page</p>
+          <Select
+            value={pageSize.toString()}
+            onValueChange={handlePageSizeChange}
+          >
+            <SelectTrigger className="h-8 w-[70px]">
+              <SelectValue placeholder={pageSize.toString()} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <SelectItem key={size} value={size.toString()}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <div className="flex items-center gap-1">
+            <span className="text-sm">{currentPage}</span>
+            <span className="text-sm text-muted-foreground">of</span>
+            <span className="text-sm">{totalPages}</span>
+          </div>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
