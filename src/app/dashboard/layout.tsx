@@ -28,20 +28,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <div className="flex">
         {/* Sidebar */}
 
-        <AppSidebar
-          className={`bg-background transition-all duration-300 ${
-            isSidebarOpen ? "w-64" : "w-0 md:w-0"
-          }`}
-        />
+        <AppSidebar className={`bg-background transition-all duration-300`} />
 
         {/* Main Content */}
         <SidebarInset
-          className={`flex w-screen flex-1 flex-col transition-all duration-300 ${
-            isSidebarOpen ? "md:w-[calc(100vw-265px)]" : ""
+          className={`flex flex-col transition-all duration-300 ${
+            isSidebarOpen ? "w-screen" : "w-[calc(100vw-265px)]"
           }`}
         >
           <header className="flex h-16 shrink-0 items-center gap-2 px-4">
-            <SidebarTrigger />
+            <SidebarTrigger onClick={() => setIsSidebarOpen(!isSidebarOpen)} />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <div className="flex w-full items-center justify-between">
               <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
