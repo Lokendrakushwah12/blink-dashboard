@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         {/* Main Content */}
         <SidebarInset
           className={`flex flex-col transition-all duration-300 ${
-            isSidebarOpen ? "w-screen" : "w-[calc(100vw-265px)]"
+            isSidebarOpen ? "w-screen" : "w-screen md:w-[calc(100vw-265px)]"
           }`}
         >
           <header className="flex h-16 shrink-0 items-center gap-2 px-4">

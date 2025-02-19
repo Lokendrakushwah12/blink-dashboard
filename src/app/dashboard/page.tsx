@@ -11,18 +11,20 @@ const DashboardPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-green-600/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#16a34a"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-muted-foreground"
+              >
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">₹45,231.89</div>
@@ -34,20 +36,22 @@ const DashboardPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gray-600/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-muted-foreground"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">2350</div>
@@ -61,7 +65,9 @@ const DashboardPage = () => {
             <CardTitle className="text-sm font-medium">
               Active Matches
             </CardTitle>
-            <Heart size={16} className="text-muted-foreground" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-red-600/20">
+              <Heart size={16} className="text-red-600" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">1,234</div>
@@ -73,7 +79,9 @@ const DashboardPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Open Tickets</CardTitle>
-            <Tickets size={16} className="text-muted-foreground" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-yellow-600/20">
+              <Tickets size={16} className="text-yellow-600" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">+57</div>
