@@ -55,7 +55,8 @@ interface User {
   email: string;
   imageURL: string;
   phoneNumber: string;
-  location: string;
+  country: string;
+  city: string;
   totalMatches: number;
   payments: string;
   reportCount: number;
@@ -85,7 +86,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "New York, USA",
+      country: "New York, USA",
+      city: "Gurgaon",
       totalMatches: 45,
       payments: "$250",
       reportCount: 0,
@@ -97,7 +99,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "London, UK",
+      country: "London, UK",
+      city: "Gurgaon",
       totalMatches: 32,
       payments: "$180",
       reportCount: 2,
@@ -109,7 +112,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Toronto, CA",
+      country: "Toronto, CA",
+      city: "Gurgaon",
       totalMatches: 28,
       payments: "$150",
       reportCount: 5,
@@ -121,7 +125,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Sydney, AU",
+      country: "Sydney, AU",
+      city: "Gurgaon",
       totalMatches: 52,
       payments: "$320",
       reportCount: 1,
@@ -133,7 +138,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Berlin, DE",
+      country: "Berlin, DE",
+      city: "Gurgaon",
       totalMatches: 39,
       payments: "$210",
       reportCount: 3,
@@ -145,7 +151,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Paris, FR",
+      country: "Paris, FR",
+      city: "Gurgaon",
       totalMatches: 41,
       payments: "$275",
       reportCount: 0,
@@ -157,7 +164,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Tokyo, JP",
+      country: "Tokyo, JP",
+      city: "Gurgaon",
       totalMatches: 35,
       payments: "$190",
       reportCount: 6,
@@ -169,7 +177,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Seoul, KR",
+      country: "Seoul, KR",
+      city: "Bangalore",
       totalMatches: 48,
       payments: "$290",
       reportCount: 1,
@@ -181,7 +190,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Mumbai, IN",
+      country: "Mumbai, IN",
+      city: "Gurgaon",
       totalMatches: 33,
       payments: "$165",
       reportCount: 4,
@@ -193,7 +203,8 @@ const UsersTable = () => {
       email: "Lokendra@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Pune, IN",
+      country: "India",
+      city: "Gurgaon",
       totalMatches: 37,
       payments: "$225",
       reportCount: 2,
@@ -205,7 +216,8 @@ const UsersTable = () => {
       email: "Sophie@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Madrid, ES",
+      country: "Madrid, ES",
+      city: "Chennai",
       totalMatches: 43,
       payments: "$260",
       reportCount: 0,
@@ -217,7 +229,8 @@ const UsersTable = () => {
       email: "example@gmail.com",
       imageURL: "https://avatars.githubusercontent.com/u/118094744",
       phoneNumber: "+91 234 567 8902",
-      location: "Amsterdam, NL",
+      country: "Amsterdam, NL",
+      city: "Gurgaon",
       totalMatches: 31,
       payments: "$170",
       reportCount: 7,
@@ -240,7 +253,9 @@ const UsersTable = () => {
         searchQuery === "" ||
         user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.id.toString().includes(searchQuery);
+        user.id.toString().includes(searchQuery) ||
+        user.country.toString().includes(searchQuery) ||
+        user.city.toString().includes(searchQuery);
 
       const matchesStatus =
         statusFilter.length === 0 || statusFilter.includes(user.status);
@@ -418,7 +433,7 @@ const UsersTable = () => {
                   {user.email}
                 </TableCell>
                 <TableCell className="w-[200px] font-medium">
-                  {user.location}
+                  {user.country}, {user.city}
                 </TableCell>
                 <TableCell className="w-[100px] text-center font-medium">
                   {user.totalMatches}

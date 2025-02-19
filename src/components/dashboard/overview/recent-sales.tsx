@@ -10,10 +10,10 @@ import {
 export function RecentSales() {
   const error = new Error("whoops");
   return (
-    <Card className="md:pb-7 pb-0">
+    <Card className="pb-0 md:pb-7">
       <CardHeader>
-        <CardTitle>Recent Sales</CardTitle>
-        <CardDescription>You made 265 sales this month.</CardDescription>
+        <CardTitle>Recent Sign ups</CardTitle>
+        <CardDescription>You made 265 sign ups this month.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
@@ -31,7 +31,7 @@ export function RecentSales() {
                 olivia.martin@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+₹1,999.00</div>
+            <div className="ml-auto font-medium">Pune, IN</div>
           </div>
           <div className="flex items-center">
             <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
@@ -47,7 +47,7 @@ export function RecentSales() {
                 jackson.lee@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+₹2,499.00</div>
+            <div className="ml-auto font-medium">Pune, IN</div>
           </div>
           <div className="flex items-center">
             <Avatar className="h-9 w-9">
@@ -65,7 +65,7 @@ export function RecentSales() {
                 isabella.nguyen@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+₹2,499.00</div>
+            <div className="ml-auto font-medium">Pune, IN</div>
           </div>
           <div className="flex items-center">
             <Avatar className="h-9 w-9">
@@ -79,7 +79,7 @@ export function RecentSales() {
               <p className="text-sm font-medium leading-none">William Kim</p>
               <p className="text-sm text-muted-foreground">will@email.com</p>
             </div>
-            <div className="ml-auto font-medium">+₹2,499.00</div>
+            <div className="ml-auto font-medium">Pune, IN</div>
           </div>
           <div className="flex items-center">
             <Avatar className="h-9 w-9">
@@ -95,7 +95,7 @@ export function RecentSales() {
                 sofia.davis@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+₹2,499.00</div>
+            <div className="ml-auto font-medium">Pune, IN</div>
           </div>
         </div>
       </CardContent>

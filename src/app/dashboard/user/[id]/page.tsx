@@ -12,6 +12,11 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"), {
+  ssr: false,
+});
 
 type Status = "active" | "suspended" | "blacklisted";
 
@@ -21,7 +26,8 @@ interface User {
   email: string;
   imageURL: string;
   phoneNumber: string;
-  location: string;
+  country: string;
+  city: string;
   totalMatches: number;
   payments: string;
   reportCount: number;
@@ -30,6 +36,9 @@ interface User {
   lastActive: string;
   bio: string;
   matchHistory: { id: number; name: string; date: string }[];
+  videoURL: string;
+  prompts: string[];
+  imagesURLs: string[];
 }
 
 const UserDetails = () => {
@@ -38,11 +47,13 @@ const UserDetails = () => {
 
   const user: User = {
     id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    imageURL: "https://avatars.githubusercontent.com/u/118094744",
+    name: "Anastasiya Badun",
+    email: "anastasirabadun34@gmail.com",
+    imageURL:
+      "https://images.unsplash.com/photo-1698620625582-b11424bb9127?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     phoneNumber: "+91 234 567 8902",
-    location: "New York, USA",
+    country: "India",
+    city: "Pune",
     totalMatches: 45,
     payments: "$250",
     reportCount: 0,
@@ -53,6 +64,17 @@ const UserDetails = () => {
     matchHistory: [
       { id: 1, name: "Jane Smith", date: "2024-02-15" },
       { id: 2, name: "Sarah Wilson", date: "2024-02-10" },
+    ],
+    videoURL: "https://www.w3schools.com/html/mov_bbb.mp4",
+    prompts: [
+      "If I could travel anywhere, I’d go to...",
+      "The best way to win me over is...",
+      "A fun fact about me is...",
+    ],
+    imagesURLs: [
+      "https://images.unsplash.com/photo-1698620625664-d511d1a0e137?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1698620625532-1a721990501f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1698620625651-bf16741e3fa6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     ],
   };
 
@@ -81,7 +103,7 @@ const UserDetails = () => {
       </Button>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+        <Card className="border-0">
           <CardHeader>
             <CardTitle>User Information</CardTitle>
             <CardDescription>Basic user details and status</CardDescription>
@@ -92,7 +114,7 @@ const UserDetails = () => {
               alt={user.name}
               width={200}
               height={200}
-              className="h-28 w-28 rounded-full"
+              className="h-28 w-28 rounded-full object-cover"
             />
             <div className="flex items-start justify-between">
               <div>
@@ -108,7 +130,9 @@ const UserDetails = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-muted-foreground">Location</p>
-                <p className="font-medium">{user.location}</p>
+                <p className="font-medium">
+                  {user.city}, {user.country}
+                </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Join Date</p>
@@ -126,7 +150,7 @@ const UserDetails = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-0">
           <CardHeader>
             <CardTitle>Activity Overview</CardTitle>
             <CardDescription>User activity and statistics</CardDescription>
@@ -161,7 +185,51 @@ const UserDetails = () => {
             </div>
           </CardContent>
         </Card>
+        <Card className="border-0">
+          <CardHeader>
+            <CardTitle>Prompts</CardTitle>
+            <CardDescription>Get to know me better</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-3">
+              {user.prompts.map((prompt, index) => (
+                <li key={index} className="border-l-4 border-primary pl-3">
+                  {prompt}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+        <Card className="border-0">
+          <CardHeader>
+            <CardTitle>Video Introduction</CardTitle>
+            <CardDescription>See and hear me in action</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <VideoPlayer src={user.videoURL} />
+          </CardContent>
+        </Card>
       </div>
+      <Card className="border-0">
+        <CardHeader>
+          <CardTitle>Images</CardTitle>
+          <CardDescription>See me in images</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-3 gap-4">
+            {user.imagesURLs.map((image, index) => (
+              <Image
+                key={index}
+                src={image}
+                alt={`Image ${index + 1}`}
+                width={500}
+                height={500}
+                className="h-[500px] w-full rounded-lg object-cover"
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
