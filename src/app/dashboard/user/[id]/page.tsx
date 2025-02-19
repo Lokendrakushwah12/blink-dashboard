@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 type Status = "active" | "suspended" | "blacklisted";
 
@@ -18,6 +19,8 @@ interface User {
   id: number;
   name: string;
   email: string;
+  imageURL: string;
+  phoneNumber: string;
   location: string;
   totalMatches: number;
   payments: string;
@@ -37,6 +40,8 @@ const UserDetails = () => {
     id: 1,
     name: "John Doe",
     email: "john.doe@example.com",
+    imageURL: "https://avatars.githubusercontent.com/u/118094744",
+    phoneNumber: "+91 234 567 8902",
     location: "New York, USA",
     totalMatches: 45,
     payments: "$250",
@@ -82,10 +87,18 @@ const UserDetails = () => {
             <CardDescription>Basic user details and status</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <Image
+              src={user.imageURL}
+              alt={user.name}
+              width={200}
+              height={200}
+              className="h-28 w-28 rounded-full"
+            />
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-2xl font-bold">{user.name}</h3>
                 <p className="text-muted-foreground">{user.email}</p>
+                <p className="text-muted-foreground">{user.phoneNumber}</p>
               </div>
               <Badge className={getStatusColor(user.status)}>
                 {user.status.charAt(0).toUpperCase() + user.status.slice(1)}

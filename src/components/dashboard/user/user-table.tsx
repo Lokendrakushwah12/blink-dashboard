@@ -10,6 +10,8 @@ import {
   ChevronDown,
   ChevronUp,
   Filter,
+  ChevronsUpDown,
+  ChevronsDownUp,
 } from "lucide-react";
 
 import {
@@ -39,6 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 const PAGE_SIZE_OPTIONS = [10, 20, 30] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
@@ -50,6 +53,8 @@ interface User {
   id: number;
   name: string;
   email: string;
+  imageURL: string;
+  phoneNumber: string;
   location: string;
   totalMatches: number;
   payments: string;
@@ -78,6 +83,8 @@ const UsersTable = () => {
       id: 1,
       name: "John Doe",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "New York, USA",
       totalMatches: 45,
       payments: "$250",
@@ -88,6 +95,8 @@ const UsersTable = () => {
       id: 2,
       name: "Jane Smith",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "London, UK",
       totalMatches: 32,
       payments: "$180",
@@ -98,6 +107,8 @@ const UsersTable = () => {
       id: 3,
       name: "Mike Johnson",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Toronto, CA",
       totalMatches: 28,
       payments: "$150",
@@ -108,6 +119,8 @@ const UsersTable = () => {
       id: 4,
       name: "Sarah Williams",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Sydney, AU",
       totalMatches: 52,
       payments: "$320",
@@ -118,6 +131,8 @@ const UsersTable = () => {
       id: 5,
       name: "David Brown",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Berlin, DE",
       totalMatches: 39,
       payments: "$210",
@@ -128,6 +143,8 @@ const UsersTable = () => {
       id: 6,
       name: "Emma Davis",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Paris, FR",
       totalMatches: 41,
       payments: "$275",
@@ -138,6 +155,8 @@ const UsersTable = () => {
       id: 7,
       name: "Michael Wilson",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Tokyo, JP",
       totalMatches: 35,
       payments: "$190",
@@ -148,6 +167,8 @@ const UsersTable = () => {
       id: 8,
       name: "Lisa Anderson",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Seoul, KR",
       totalMatches: 48,
       payments: "$290",
@@ -158,6 +179,8 @@ const UsersTable = () => {
       id: 9,
       name: "James Taylor",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Mumbai, IN",
       totalMatches: 33,
       payments: "$165",
@@ -168,6 +191,8 @@ const UsersTable = () => {
       id: 10,
       name: "Lokendra Kushwah",
       email: "Lokendra@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Pune, IN",
       totalMatches: 37,
       payments: "$225",
@@ -178,6 +203,8 @@ const UsersTable = () => {
       id: 11,
       name: "Robert Martin",
       email: "Sophie@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Madrid, ES",
       totalMatches: 43,
       payments: "$260",
@@ -188,6 +215,8 @@ const UsersTable = () => {
       id: 12,
       name: "Sophie Clark",
       email: "example@gmail.com",
+      imageURL: "https://avatars.githubusercontent.com/u/118094744",
+      phoneNumber: "+91 234 567 8902",
       location: "Amsterdam, NL",
       totalMatches: 31,
       payments: "$170",
@@ -254,11 +283,13 @@ const UsersTable = () => {
 
   const getSortIcon = (key: keyof User) => {
     if (sortConfig.key !== key)
-      return <ChevronDown className="h-4 w-4 text-muted-foreground" />;
+      return (
+        <ChevronsUpDown size={16} className="h-3 w-3 text-muted-foreground" />
+      );
     return sortConfig.direction === "asc" ? (
-      <ChevronUp className="h-4 w-4" />
+      <ChevronsUpDown className="h-3 w-3" />
     ) : (
-      <ChevronDown className="h-4 w-4" />
+      <ChevronsUpDown className="h-3 w-3" />
     );
   };
 
@@ -344,12 +375,12 @@ const UsersTable = () => {
               ].map(({ key, label, align }) => (
                 <TableHead
                   key={key}
-                  className={align === "right" ? "text-right" : undefined}
+                  className={`m-0 h-fit gap-0 p-0 ${align === "right" ? "text-right" : undefined}`}
                 >
                   <Button
                     variant="secondary"
                     onClick={() => handleSort(key as keyof User)}
-                    className="h-8 bg-transparent p-0 font-medium hover:bg-transparent"
+                    className="flex size-full h-12 justify-start rounded-none bg-transparent text-left text-sm font-medium text-muted-foreground hover:bg-muted/20"
                   >
                     {label}
                     {getSortIcon(key as keyof User)}
@@ -367,15 +398,38 @@ const UsersTable = () => {
                 className="cursor-pointer hover:bg-card/50"
               >
                 <TableCell>{user.id}</TableCell>
-                <TableCell className="font-medium">{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.location}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className="flex w-[200px] items-center justify-start gap-1 font-medium">
+                  {user?.imageURL ? (
+                    <Image
+                      src={user.imageURL}
+                      alt={user.name}
+                      width={100}
+                      height={100}
+                      className="h-8 w-8 rounded-full"
+                    />
+                  ) : (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500/20">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  {user.name}
+                </TableCell>
+                <TableCell className="w-[200px] font-medium">
+                  {user.email}
+                </TableCell>
+                <TableCell className="w-[200px] font-medium">
+                  {user.location}
+                </TableCell>
+                <TableCell className="w-[100px] text-center font-medium">
                   {user.totalMatches}
                 </TableCell>
-                <TableCell className="text-right">{user.payments}</TableCell>
-                <TableCell className="text-right">{user.reportCount}</TableCell>
-                <TableCell>
+                <TableCell className="w-[100px] text-center font-medium">
+                  {user.payments}
+                </TableCell>
+                <TableCell className="w-[100px] text-center font-medium">
+                  {user.reportCount}
+                </TableCell>
+                <TableCell className="w-[100px] text-center font-medium">
                   <Badge className={getStatusColor(user.status)}>
                     {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
                   </Badge>
