@@ -54,12 +54,12 @@ const data = {
       icon: UserIcon,
       items: [],
     },
-    // {
-    //   title: "Revenue",
-    //   url: "/dashboard/revenue",
-    //   icon: CircleDollarSignIcon,
-    //   items: [],
-    // },
+    {
+      title: "Revenue",
+      url: "/dashboard/revenue",
+      icon: CircleDollarSignIcon,
+      items: [],
+    },
     {
       title: "World",
       url: "/dashboard/world",

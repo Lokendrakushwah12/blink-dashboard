@@ -55,7 +55,7 @@ const UserDetails = () => {
     country: "India",
     city: "Pune",
     totalMatches: 45,
-    payments: "$250",
+    payments: "₹250",
     reportCount: 0,
     status: "active",
     joinDate: "2024-01-15",
