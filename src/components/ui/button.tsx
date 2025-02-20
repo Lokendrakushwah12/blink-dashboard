@@ -13,6 +13,8 @@ const buttonVariants = cva(
           "bg-primary shadow-[inset_0px_1px_1px_0px_rgba(255,255,255,0.20),inset_0px_6px_12px_0px_rgba(255,255,255,0.12),0px_1px_2px_0px_rgba(8,8,8,0.05),0px_4px_4px_0px_rgba(8,8,8,0.01)] dark:shadow-[inset_0px_1px_1px_0px_rgba(255,255,255,0.20),inset_0px_6px_12px_0px_rgba(255,255,255,0.12),0px_1px_2px_0px_rgba(8,8,8,0.20),0px_4px_4px_0px_rgba(8,8,8,0.08)] dark:border-border border-transparent text-primary-foreground hover:bg-primary/90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          warning:
+          "bg-yellow-700 text-destructive-foreground hover:bg-yellow-700/90",
         outline:
           "border shadow-[inset_0px_1px_1px_0px_rgba(35,197,98,0.01),inset_0px_6px_12px_0px_rgba(35,197,98,0.05),0px_1px_2px_0px_rgba(8,8,8,0.01),0px_4px_4px_0px_rgba(8,8,8,0.01)] dark:shadow-[inset_0px_1px_1px_0px_rgba(255,255,255,0.03),inset_0px_6px_12px_0px_rgba(255,255,255,0.08),0px_1px_2px_0px_rgba(8,8,8,0.20),0px_4px_4px_0px_rgba(8,8,8,0.08)] border-input bg-background hover:bg-accent/30 hover:text-accent-foreground/80",
         secondary:
