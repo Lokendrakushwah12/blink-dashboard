@@ -1,4 +1,5 @@
 import CitiesTable from "@/components/dashboard/world/cities-table";
+import CountriesTable from "@/components/dashboard/world/countries-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const WorldPage = () => {
@@ -288,6 +289,7 @@ const WorldPage = () => {
       </div>
       <div className="flex w-full flex-col gap-4">
         <CitiesTable />
+        <CountriesTable />
         {/* <div className="col-span-7 md:col-span-3">{Sales()}</div> */}
         {/* <div className="col-span-7">{WorldStats()}</div> */}
       </div>
