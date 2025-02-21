@@ -5,6 +5,7 @@ import {
   Earth,
   Flower,
   LifeBuoy,
+  LogIn,
   MessageSquareWarning,
   PanelsLeftBottom,
   Send,
@@ -34,6 +35,7 @@ import { EarthIcon } from "./ui/earth";
 import { UserIcon } from "./ui/user";
 import { FilePenLineIcon } from "./ui/file-pen-line";
 import { MessageCircleMoreIcon } from "./ui/message-circle-more";
+import { LogoutIcon } from "./ui/logout";
 
 const data = {
   user: {
@@ -83,6 +85,12 @@ const data = {
       icon: MessageCircleMoreIcon,
       items: [],
     },
+    {
+      title: "Logged in",
+      url: "/dashboard/logged-in",
+      icon: LogoutIcon,
+      items: [],
+    },
   ],
   secondary: [
     {
@@ -124,14 +132,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain
-          items={data.navMain}
-          currentPath={pathname}
-        />
-        <NavSecondary
-          items={data.secondary}
-          currentPath={pathname}
-        />
+        <NavMain items={data.navMain} currentPath={pathname} />
+        <NavSecondary items={data.secondary} currentPath={pathname} />
       </SidebarContent>
 
       <SidebarFooter>

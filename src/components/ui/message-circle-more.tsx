@@ -36,7 +36,7 @@ const dotVariants: Variants = {
 const MessageCircleMoreIcon = forwardRef<
   MessageCircleMoreIconHandle,
   { controls: any } & HTMLAttributes<HTMLDivElement>
->(({ controls, ...props }) => {
+>(({ controls, ...props },ref) => {
   return (
     <div
       className="flex cursor-pointer select-none items-center justify-center rounded-md p-2 transition-colors duration-200"
