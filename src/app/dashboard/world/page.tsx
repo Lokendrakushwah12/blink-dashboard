@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const WorldPage = () => {
   return (
     <div className="flex w-full flex-col gap-4 px-4">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -228,8 +228,6 @@ const WorldPage = () => {
             </p>
           </CardContent>
         </Card>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Male Users</CardTitle>
@@ -290,8 +288,6 @@ const WorldPage = () => {
       <div className="flex w-full flex-col gap-4">
         <CitiesTable />
         <CountriesTable />
-        {/* <div className="col-span-7 md:col-span-3">{Sales()}</div> */}
-        {/* <div className="col-span-7">{WorldStats()}</div> */}
       </div>
     </div>
   );

@@ -445,9 +445,11 @@ const UsersTable = () => {
                   {user.reportCount}
                 </TableCell>
                 <TableCell className="w-[100px] text-center font-medium">
-                  <Badge className={getStatusColor(user.status)}>
+                  <span
+                    className={`rounded-md px-2 py-1 text-xs ${getStatusColor(user.status)}`}
+                  >
                     {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                  </Badge>
+                  </span>
                 </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>

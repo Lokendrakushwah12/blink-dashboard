@@ -82,59 +82,62 @@ const ReportsTable = () => {
   };
 
   return (
-    <div className="overflow-x-auto rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Report ID</TableHead>
-            <TableHead>Reported User</TableHead>
-            <TableHead>Reason</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Severity</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {reports.map((report) => (
-            <TableRow
-              key={report.id}
-              className="cursor-pointer"
-              onClick={() => handleRowClick(report.id)}
-            >
-              <TableCell>{report.id}</TableCell>
-              <TableCell>{report.user}</TableCell>
-              <TableCell>{report.reason}</TableCell>
-              <TableCell>{report.date}</TableCell>
-              <TableCell>
-                <span
-                  className={`rounded-md px-2 py-1 text-sm ${getStatusColor(report.status)}`}
-                >
-                  {report.status}
-                </span>
-              </TableCell>
-              <TableCell>
-                <span
-                  className={`rounded-md px-2 py-1 text-sm ${getSeverityColor(report.severity)}`}
-                >
-                  {report.severity}
-                </span>
-              </TableCell>
-              <TableCell>
-                <Button
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRowClick(report.id);
-                  }}
-                >
-                  Review
-                </Button>
-              </TableCell>
+    <div className="flex w-full flex-col gap-4">
+      <h1 className="text-2xl font-bold">Recent Tickets</h1>
+      <div className="overflow-x-auto rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Report ID</TableHead>
+              <TableHead>Reported User</TableHead>
+              <TableHead>Reason</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Severity</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {reports.map((report) => (
+              <TableRow
+                key={report.id}
+                className="cursor-pointer"
+                onClick={() => handleRowClick(report.id)}
+              >
+                <TableCell>{report.id}</TableCell>
+                <TableCell>{report.user}</TableCell>
+                <TableCell>{report.reason}</TableCell>
+                <TableCell>{report.date}</TableCell>
+                <TableCell>
+                  <span
+                    className={`rounded-md px-2 py-1 text-sm ${getStatusColor(report.status)}`}
+                  >
+                    {report.status}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={`rounded-md px-2 py-1 text-sm ${getSeverityColor(report.severity)}`}
+                  >
+                    {report.severity}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRowClick(report.id);
+                    }}
+                  >
+                    Review
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };

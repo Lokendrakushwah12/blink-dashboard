@@ -69,7 +69,6 @@ const ReportPage = () => {
       </div>
 
       <div className="flex w-full flex-col gap-4">
-        <h1 className="text-2xl font-bold">Recent Reports</h1>
         <ReportsTable />
       </div>
     </div>
