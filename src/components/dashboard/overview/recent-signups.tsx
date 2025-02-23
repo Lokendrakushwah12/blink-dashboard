@@ -6,15 +6,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
-export function RecentSales() {
+export function RecentSignups() {
   const error = new Error("whoops");
   return (
     <Card className="pb-0 md:pb-7">
-      <CardHeader>
-        <CardTitle>Recent Sign ups</CardTitle>
-        <CardDescription>You made 265 sign ups this month.</CardDescription>
-      </CardHeader>
+      <div className="flex items-end justify-between">
+        <CardHeader>
+          <CardTitle>Recent Sign ups</CardTitle>
+          <CardDescription>You made 265 sign ups this month.</CardDescription>
+        </CardHeader>
+        <CardHeader>
+          <Link href="/dashboard/recent-signups">
+            <CardDescription className="cursor-pointer hover:underline">
+              View all
+            </CardDescription>
+          </Link>
+        </CardHeader>
+      </div>
       <CardContent>
         <div className="space-y-8">
           <div className="flex items-center">
