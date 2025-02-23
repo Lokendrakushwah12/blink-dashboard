@@ -379,7 +379,7 @@ const UsersTable = () => {
           <TableHeader>
             <TableRow>
               {[
-                { key: "id", label: "ID" },
+                // { key: "id", label: "ID" },
                 { key: "name", label: "Name" },
                 { key: "email", label: "Email" },
                 { key: "location", label: "Location" },
@@ -412,7 +412,7 @@ const UsersTable = () => {
                 onClick={() => handleRowClick(user.id)}
                 className="cursor-pointer hover:bg-card/50"
               >
-                <TableCell>{user.id}</TableCell>
+                {/* <TableCell>{user.id}</TableCell> */}
                 <TableCell className="flex w-[200px] items-center justify-start gap-1 font-medium">
                   {user?.imageURL ? (
                     <Image
