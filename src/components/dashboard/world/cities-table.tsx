@@ -22,6 +22,7 @@ import {
   ChevronsUpDown,
   Search,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 const PAGE_SIZE_OPTIONS = [10, 20, 30] as const;
@@ -44,6 +45,7 @@ const CitiesTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<PageSize>(PAGE_SIZE_OPTIONS[0]);
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: null,
     direction: null,
@@ -158,6 +160,10 @@ const CitiesTable = () => {
   const endIndex = startIndex + pageSize;
   const currentCities = sortedCities.slice(startIndex, endIndex);
 
+  const navigateToCityPage = (cityName: string) => {
+    router.push(`/dashboard/world/city/${1}`);
+  };
+
   return (
     <div className="w-full space-y-4">
       <h1 className="text-2xl font-bold">Cities Gender Distribution</h1>
@@ -200,7 +206,11 @@ const CitiesTable = () => {
           </TableHeader>
           <TableBody>
             {currentCities.map((city) => (
-              <TableRow key={city.id}>
+              <TableRow
+                key={city.id}
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => navigateToCityPage(city.city)}
+              >
                 <TableCell className="text-center font-medium">
                   {city.city}
                 </TableCell>

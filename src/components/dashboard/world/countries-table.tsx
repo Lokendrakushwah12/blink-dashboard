@@ -22,6 +22,7 @@ import {
   ChevronsUpDown,
   Search,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 const PAGE_SIZE_OPTIONS = [10, 20, 30] as const;
@@ -43,6 +44,7 @@ const CountriesTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<PageSize>(PAGE_SIZE_OPTIONS[0]);
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: null,
     direction: null,
@@ -149,6 +151,10 @@ const CountriesTable = () => {
   const endIndex = startIndex + pageSize;
   const currentCountries = sortedCountries.slice(startIndex, endIndex);
 
+  const navigateToCountryPage = (id: number) => {
+    router.push(`/dashboard/world/country/${1}`);
+  };
+
   return (
     <div className="w-full space-y-4">
       <h1 className="text-2xl font-bold">Countries Gender Distribution</h1>
@@ -190,7 +196,11 @@ const CountriesTable = () => {
           </TableHeader>
           <TableBody>
             {currentCountries.map((country) => (
-              <TableRow key={country.id}>
+              <TableRow
+                key={country.id}
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => navigateToCountryPage(country.id)}
+              >
                 <TableCell className="text-center font-medium">
                   {country.country}
                 </TableCell>

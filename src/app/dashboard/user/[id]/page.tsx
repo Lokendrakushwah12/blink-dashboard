@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -19,6 +20,16 @@ const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"), {
 });
 
 type Status = "active" | "suspended" | "blacklisted";
+
+interface PinnedPlace {
+  id: number;
+  name: string;
+  type: "restaurant" | "event";
+  imageURL: string;
+  location: string;
+  date?: string; // Optional date for events
+  description: string;
+}
 
 interface User {
   id: number;
@@ -35,10 +46,16 @@ interface User {
   joinDate: string;
   lastActive: string;
   bio: string;
-  matchHistory: { id: number; name: string; date: string }[];
+  matchHistory: { 
+    id: number; 
+    name: string; 
+    date: string;
+    imageURL: string;
+  }[];
   videoURL: string;
   prompts: string[];
   imagesURLs: string[];
+  pinnedPlaces: PinnedPlace[]; // Added pinned places
 }
 
 const UserDetails = () => {
@@ -62,12 +79,22 @@ const UserDetails = () => {
     lastActive: "2024-02-16",
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     matchHistory: [
-      { id: 1, name: "Jane Smith", date: "2024-02-15" },
-      { id: 2, name: "Sarah Wilson", date: "2024-02-10" },
+      { 
+        id: 1, 
+        name: "Jane Smith", 
+        date: "2024-02-15",
+        imageURL: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop"
+      },
+      { 
+        id: 2, 
+        name: "Sarah Wilson", 
+        date: "2024-02-10",
+        imageURL: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"
+      },
     ],
     videoURL: "https://www.w3schools.com/html/mov_bbb.mp4",
     prompts: [
-      "If I could travel anywhere, I’d go to...",
+      "If I could travel anywhere, I'd go to...",
       "The best way to win me over is...",
       "A fun fact about me is...",
     ],
@@ -76,6 +103,25 @@ const UserDetails = () => {
       "https://images.unsplash.com/photo-1698620625532-1a721990501f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "https://images.unsplash.com/photo-1698620625651-bf16741e3fa6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     ],
+    pinnedPlaces: [
+      {
+        id: 1,
+        name: "Spice Garden Restaurant",
+        type: "restaurant",
+        imageURL: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
+        location: "MG Road, Pune",
+        description: "My favorite spot for authentic Indian cuisine with amazing ambiance."
+      },
+      {
+        id: 2,
+        name: "Pune Music Festival",
+        type: "event",
+        imageURL: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2074&auto=format&fit=crop",
+        location: "Shivaji Park, Pune",
+        date: "2024-03-15",
+        description: "Annual music festival with great artists and food stalls."
+      }
+    ]
   };
 
   const getStatusColor = (status: Status) => {
@@ -89,6 +135,14 @@ const UserDetails = () => {
       default:
         return "bg-gray-600/10 text-gray-600";
     }
+  };
+
+  const handleMatchClick = (matchId: number) => {
+    router.push(`/dashboard/user/${matchId}`);
+  };
+
+  const handlePlaceClick = (placeId: number) => {
+    console.log(`Navigate to place: ${placeId}`);
   };
 
   return (
@@ -173,9 +227,19 @@ const UserDetails = () => {
                 {user.matchHistory.map((match) => (
                   <div
                     key={match.id}
-                    className="flex items-center justify-between rounded-md bg-muted/50 p-2"
+                    className="flex items-center justify-between rounded-md bg-muted/50 p-2 cursor-pointer hover:bg-muted transition-colors"
+                    onClick={() => handleMatchClick(match.id)}
                   >
-                    <span>{match.name}</span>
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={match.imageURL}
+                        alt={match.name}
+                        width={40}
+                        height={40}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                      <span>{match.name}</span>
+                    </div>
                     <span className="text-sm text-muted-foreground">
                       {match.date}
                     </span>
@@ -210,6 +274,49 @@ const UserDetails = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Take Me Here Section */}
+      <Card className="border-0">
+        <CardHeader>
+          <CardTitle>Take Me Here</CardTitle>
+          <CardDescription>Restaurants and events I'd love to visit</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4">
+            {user.pinnedPlaces.map((place) => (
+              <Card key={place.id} className="overflow-hidden border shadow-sm">
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={place.imageURL}
+                    alt={place.name}
+                    fill
+                    className="object-cover"
+                  />
+                  <Badge 
+                    className={place.type === 'restaurant' ? 
+                      'bg-orange-600/10 text-orange-600 absolute top-2 right-2' : 
+                      'bg-blue-600/10 text-blue-600 absolute top-2 right-2'
+                    }
+                  >
+                    {place.type === 'restaurant' ? 'Restaurant' : 'Event'}
+                  </Badge>
+                </div>
+                <CardContent className="pt-4">
+                  <h3 className="text-lg font-bold mb-1">{place.name}</h3>
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                    <MapPin size={14} />
+                    <span>{place.location}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
+                    {place.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="border-0">
         <CardHeader>
           <CardTitle>Images</CardTitle>

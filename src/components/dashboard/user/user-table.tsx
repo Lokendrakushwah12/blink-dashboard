@@ -442,7 +442,12 @@ const UsersTable = () => {
                   {user.payments}
                 </TableCell>
                 <TableCell className="w-[100px] text-center font-medium">
-                  {user.reportCount}
+                  <Badge
+                    variant={user.reportCount > 0 ? "destructive" : "outline"}
+                    className={user.reportCount > 0 ? "" : "bg-transparent"}
+                  >
+                    {user.reportCount}
+                  </Badge>
                 </TableCell>
                 <TableCell className="w-[100px] text-center font-medium">
                   <span
