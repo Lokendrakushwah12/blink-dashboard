@@ -1,7 +1,6 @@
 "use client";
-import React from "react";
-import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, MapPin, Calendar } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,11 +8,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+import { AlertTriangle, ArrowLeft, Calendar, MapPin } from "lucide-react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 
 const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"), {
   ssr: false,
@@ -43,12 +42,13 @@ interface User {
   payments: string;
   reportCount: number;
   status: Status;
+  statusReason?: string; // Added reason for suspension/blacklisting
   joinDate: string;
   lastActive: string;
   bio: string;
-  matchHistory: { 
-    id: number; 
-    name: string; 
+  matchHistory: {
+    id: number;
+    name: string;
     date: string;
     imageURL: string;
   }[];
@@ -74,22 +74,26 @@ const UserDetails = () => {
     totalMatches: 45,
     payments: "₹250",
     reportCount: 0,
-    status: "active",
+    status: "suspended", // Changed to test suspension
+    statusReason:
+      "Multiple users reported inappropriate messages. Account under review until 03/15/2025.", // Added reason
     joinDate: "2024-01-15",
     lastActive: "2024-02-16",
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     matchHistory: [
-      { 
-        id: 1, 
-        name: "Jane Smith", 
+      {
+        id: 1,
+        name: "Jane Smith",
         date: "2024-02-15",
-        imageURL: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop"
+        imageURL:
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop",
       },
-      { 
-        id: 2, 
-        name: "Sarah Wilson", 
+      {
+        id: 2,
+        name: "Sarah Wilson",
         date: "2024-02-10",
-        imageURL: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"
+        imageURL:
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
       },
     ],
     videoURL: "https://www.w3schools.com/html/mov_bbb.mp4",
@@ -108,20 +112,24 @@ const UserDetails = () => {
         id: 1,
         name: "Spice Garden Restaurant",
         type: "restaurant",
-        imageURL: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
+        imageURL:
+          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
         location: "MG Road, Pune",
-        description: "My favorite spot for authentic Indian cuisine with amazing ambiance."
+        description:
+          "My favorite spot for authentic Indian cuisine with amazing ambiance.",
       },
       {
         id: 2,
         name: "Pune Music Festival",
         type: "event",
-        imageURL: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2074&auto=format&fit=crop",
+        imageURL:
+          "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2074&auto=format&fit=crop",
         location: "Shivaji Park, Pune",
         date: "2024-03-15",
-        description: "Annual music festival with great artists and food stalls."
-      }
-    ]
+        description:
+          "Annual music festival with great artists and food stalls.",
+      },
+    ],
   };
 
   const getStatusColor = (status: Status) => {
@@ -144,6 +152,9 @@ const UserDetails = () => {
   const handlePlaceClick = (placeId: number) => {
     console.log(`Navigate to place: ${placeId}`);
   };
+
+  // Determine if we need to show status reason
+  const showStatusReason = user.status !== "active" && user.statusReason;
 
   return (
     <div className="mx-auto w-full space-y-6 px-4">
@@ -180,6 +191,27 @@ const UserDetails = () => {
                 {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
               </Badge>
             </div>
+
+            {/* Status reason alert - only shown for suspended/blacklisted users */}
+            {showStatusReason && (
+              <Alert
+                variant={
+                  user.status === "suspended" ? "warning" : "destructive"
+                }
+                // className={
+                // user.status === "suspended"
+                // ? "border-yellow-500/50 bg-yellow-500/10 text-yellow-700"
+                // : "border-rose-500/50 bg-rose-500/10 text-rose-700"
+                // }
+              >
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>
+                  Account{" "}
+                  {user.status === "suspended" ? "Suspended" : "Blacklisted"}
+                </AlertTitle>
+                <AlertDescription>{user.statusReason}</AlertDescription>
+              </Alert>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -227,7 +259,7 @@ const UserDetails = () => {
                 {user.matchHistory.map((match) => (
                   <div
                     key={match.id}
-                    className="flex items-center justify-between rounded-md bg-muted/50 p-2 cursor-pointer hover:bg-muted transition-colors"
+                    className="flex cursor-pointer items-center justify-between rounded-md bg-muted/50 p-2 transition-colors hover:bg-muted"
                     onClick={() => handleMatchClick(match.id)}
                   >
                     <div className="flex items-center gap-3">
@@ -279,10 +311,12 @@ const UserDetails = () => {
       <Card className="border-0">
         <CardHeader>
           <CardTitle>Take Me Here</CardTitle>
-          <CardDescription>Restaurants and events I'd love to visit</CardDescription>
+          <CardDescription>
+            Restaurants and events I'd love to visit
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid gap-4 md:grid-cols-2">
             {user.pinnedPlaces.map((place) => (
               <Card key={place.id} className="overflow-hidden border shadow-sm">
                 <div className="relative h-48 w-full">
@@ -292,22 +326,29 @@ const UserDetails = () => {
                     fill
                     className="object-cover"
                   />
-                  <Badge 
-                    className={place.type === 'restaurant' ? 
-                      'bg-orange-600/10 text-orange-600 absolute top-2 right-2' : 
-                      'bg-blue-600/10 text-blue-600 absolute top-2 right-2'
+                  <Badge
+                    className={
+                      place.type === "restaurant"
+                        ? "absolute right-2 top-2 bg-orange-600/10 text-orange-600"
+                        : "absolute right-2 top-2 bg-blue-600/10 text-blue-600"
                     }
                   >
-                    {place.type === 'restaurant' ? 'Restaurant' : 'Event'}
+                    {place.type === "restaurant" ? "Restaurant" : "Event"}
                   </Badge>
                 </div>
                 <CardContent className="pt-4">
-                  <h3 className="text-lg font-bold mb-1">{place.name}</h3>
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                  <h3 className="mb-1 text-lg font-bold">{place.name}</h3>
+                  <div className="mb-2 flex items-center gap-1 text-sm text-muted-foreground">
                     <MapPin size={14} />
                     <span>{place.location}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
+                  {place.date && (
+                    <div className="mb-2 flex items-center gap-1 text-sm text-muted-foreground">
+                      <Calendar size={14} />
+                      <span>{place.date}</span>
+                    </div>
+                  )}
+                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
                     {place.description}
                   </p>
                 </CardContent>
@@ -323,7 +364,7 @@ const UserDetails = () => {
           <CardDescription>See me in images</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid gap-4 md:grid-cols-3">
             {user.imagesURLs.map((image, index) => (
               <Image
                 key={index}
