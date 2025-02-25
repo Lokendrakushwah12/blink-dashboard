@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AlertTriangle, ArrowLeft, Calendar, MapPin } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Calendar, CreditCard, MapPin } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -19,6 +19,16 @@ const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"), {
 });
 
 type Status = "active" | "suspended" | "blacklisted";
+type PaymentType = "subscription" | "pay-as-you-go";
+
+interface PaymentInfo {
+  type: PaymentType;
+  amount: string;
+  lastPayment?: string;
+  nextBilling?: string; // For subscription
+  callsMade?: number; // For pay-as-you-go
+  callRate?: string; // For pay-as-you-go
+}
 
 interface PinnedPlace {
   id: number;
@@ -40,6 +50,7 @@ interface User {
   city: string;
   totalMatches: number;
   payments: string;
+  paymentInfo: PaymentInfo; // Added payment info
   reportCount: number;
   status: Status;
   statusReason?: string; // Added reason for suspension/blacklisting
@@ -72,7 +83,14 @@ const UserDetails = () => {
     country: "India",
     city: "Pune",
     totalMatches: 45,
-    payments: "₹250",
+    payments: "₹270",
+    paymentInfo: {
+      type: "pay-as-you-go", // or "subscription"
+      amount: "₹270",
+      lastPayment: "2024-02-12",
+      callsMade: 18,
+      callRate: "₹15 per match request"
+    },
     reportCount: 0,
     status: "suspended", // Changed to test suspension
     statusReason:
@@ -145,6 +163,17 @@ const UserDetails = () => {
     }
   };
 
+  const getPaymentTypeColor = (type: PaymentType) => {
+    switch (type.toLowerCase()) {
+      case "subscription":
+        return "bg-purple-600/10 text-purple-600";
+      case "pay-as-you-go":
+        return "bg-blue-600/10 text-blue-600";
+      default:
+        return "bg-gray-600/10 text-gray-600";
+    }
+  };
+
   const handleMatchClick = (matchId: number) => {
     router.push(`/dashboard/user/${matchId}`);
   };
@@ -187,9 +216,14 @@ const UserDetails = () => {
                 <p className="text-muted-foreground">{user.email}</p>
                 <p className="text-muted-foreground">{user.phoneNumber}</p>
               </div>
-              <Badge className={getStatusColor(user.status)}>
-                {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-              </Badge>
+              <div className="flex flex-col gap-2">
+                <Badge className={getStatusColor(user.status)}>
+                  {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                </Badge>
+                <Badge className={getPaymentTypeColor(user.paymentInfo.type)}>
+                  {user.paymentInfo.type === "subscription" ? "Subscribed" : "Pay-as-you-go"}
+                </Badge>
+              </div>
             </div>
 
             {/* Status reason alert - only shown for suspended/blacklisted users */}
@@ -198,11 +232,6 @@ const UserDetails = () => {
                 variant={
                   user.status === "suspended" ? "warning" : "destructive"
                 }
-                // className={
-                // user.status === "suspended"
-                // ? "border-yellow-500/50 bg-yellow-500/10 text-yellow-700"
-                // : "border-rose-500/50 bg-rose-500/10 text-rose-700"
-                // }
               >
                 <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>
@@ -252,6 +281,58 @@ const UserDetails = () => {
                 <p className="text-2xl font-bold">{user.reportCount}</p>
               </div>
             </div>
+
+            {/* Payment Info Card */}
+            <Card className="border border-muted p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <CreditCard className="h-5 w-5 text-primary" />
+                <h4 className="font-medium">Payment Information</h4>
+              </div>
+              
+              {user.paymentInfo.type === "subscription" ? (
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Plan</span>
+                    <span className="font-medium">Monthly Subscription</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Amount</span>
+                    <span className="font-medium">{user.paymentInfo.amount}/month</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Last Payment</span>
+                    <span className="font-medium">{user.paymentInfo.lastPayment}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Next Billing</span>
+                    <span className="font-medium">{user.paymentInfo.nextBilling}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Plan</span>
+                    <span className="font-medium">Pay-as-you-go</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Total Spent</span>
+                    <span className="font-medium">{user.paymentInfo.amount}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Last Payment</span>
+                    <span className="font-medium">{user.paymentInfo.lastPayment}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Calls Made</span>
+                    <span className="font-medium">{user.paymentInfo.callsMade}</span>
+                  </div>
+                  {/* <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Rate</span>
+                    <span className="font-medium">{user.paymentInfo.callRate}</span>
+                  </div> */}
+                </div>
+              )}
+            </Card>
 
             <div>
               <h4 className="mb-2 font-medium">Recent Matches</h4>
