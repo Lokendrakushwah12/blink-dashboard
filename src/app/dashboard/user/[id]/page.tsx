@@ -9,10 +9,32 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AlertTriangle, ArrowLeft, Calendar, CreditCard, MapPin } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Ban,
+  Calendar,
+  CalendarClock,
+  CheckCircle,
+  Clock,
+  CreditCard,
+  MapPin,
+  Phone,
+  User,
+  Users,
+} from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"), {
   ssr: false,
@@ -20,6 +42,29 @@ const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"), {
 
 type Status = "active" | "suspended" | "blacklisted";
 type PaymentType = "subscription" | "pay-as-you-go";
+type PreferenceType = "males-only" | "females-only" | "everyone";
+type CallStatus = "completed" | "upcoming" | "canceled" | "rescheduled";
+
+interface MatchHistory {
+  id: number;
+  name: string;
+  date: string;
+  imageURL: string;
+  duration?: string;
+  rating?: number;
+  notes?: string;
+}
+
+interface CallBooking {
+  id: number;
+  matchName: string;
+  matchImageURL: string;
+  originalDate: string;
+  scheduledDate: string;
+  status: CallStatus;
+  rescheduled: boolean;
+  duration?: string;
+}
 
 interface PaymentInfo {
   type: PaymentType;
@@ -57,23 +102,20 @@ interface User {
   joinDate: string;
   lastActive: string;
   bio: string;
-  matchHistory: {
-    id: number;
-    name: string;
-    date: string;
-    imageURL: string;
-  }[];
+  matchHistory: MatchHistory[];
   videoURL: string;
   prompts: string[];
   imagesURLs: string[];
-  pinnedPlaces: PinnedPlace[]; // Added pinned places
+  pinnedPlaces: PinnedPlace[];
+  preference: PreferenceType;
+  callBookings: CallBooking[];
 }
 
 const UserDetails = () => {
   const router = useRouter();
   const { id } = useParams();
 
-  const user: User = {
+  const [user, setUser] = useState<User>({
     id: 1,
     name: "Anastasiya Badun",
     email: "anastasirabadun34@gmail.com",
@@ -89,7 +131,7 @@ const UserDetails = () => {
       amount: "₹270",
       lastPayment: "2024-02-12",
       callsMade: 18,
-      callRate: "₹15 per match request"
+      callRate: "₹15 per match request",
     },
     reportCount: 0,
     status: "suspended", // Changed to test suspension
@@ -105,6 +147,9 @@ const UserDetails = () => {
         date: "2024-02-15",
         imageURL:
           "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop",
+        duration: "24 minutes",
+        rating: 4,
+        notes: "Great conversation about travel",
       },
       {
         id: 2,
@@ -112,6 +157,39 @@ const UserDetails = () => {
         date: "2024-02-10",
         imageURL:
           "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
+        duration: "17 minutes",
+        rating: 5,
+        notes: "Discussed common interests in art",
+      },
+      {
+        id: 3,
+        name: "Michael Chen",
+        date: "2024-02-05",
+        imageURL:
+          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop",
+        duration: "32 minutes",
+        rating: 4,
+        notes: "Shared interests in cooking",
+      },
+      {
+        id: 4,
+        name: "David Johnson",
+        date: "2024-01-28",
+        imageURL:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop",
+        duration: "15 minutes",
+        rating: 3,
+        notes: "Brief conversation",
+      },
+      {
+        id: 5,
+        name: "Robert Williams",
+        date: "2024-01-22",
+        imageURL:
+          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop",
+        duration: "28 minutes",
+        rating: 5,
+        notes: "Very engaging discussion",
       },
     ],
     videoURL: "https://www.w3schools.com/html/mov_bbb.mp4",
@@ -148,6 +226,77 @@ const UserDetails = () => {
           "Annual music festival with great artists and food stalls.",
       },
     ],
+    preference: "males-only",
+    callBookings: [
+      {
+        id: 101,
+        matchName: "James Wilson",
+        matchImageURL:
+          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop",
+        originalDate: "2024-02-27",
+        scheduledDate: "2024-02-27",
+        status: "upcoming",
+        rescheduled: false,
+      },
+      {
+        id: 102,
+        matchName: "Alex Thompson",
+        matchImageURL:
+          "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=1970&auto=format&fit=crop",
+        originalDate: "2024-02-20",
+        scheduledDate: "2024-02-25",
+        status: "completed",
+        rescheduled: true,
+        duration: "22 minutes",
+      },
+      {
+        id: 103,
+        matchName: "Noah Garcia",
+        matchImageURL:
+          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop",
+        originalDate: "2024-03-01",
+        scheduledDate: "2024-03-01",
+        status: "upcoming",
+        rescheduled: false,
+      },
+      {
+        id: 104,
+        matchName: "Daniel Kim",
+        matchImageURL:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop",
+        originalDate: "2024-02-15",
+        scheduledDate: "2024-02-15",
+        status: "canceled",
+        rescheduled: false,
+      },
+    ],
+  });
+
+  const handleStatusChange = (newStatus: Status) => {
+    let newStatusReason: string | undefined;
+
+    // Set appropriate reason based on new status
+    if (newStatus === "active") {
+      newStatusReason = undefined;
+    } else if (newStatus === "suspended") {
+      newStatusReason =
+        "Account manually suspended by administrator on " +
+        new Date().toLocaleDateString();
+    } else if (newStatus === "blacklisted") {
+      newStatusReason =
+        "Account permanently blacklisted by administrator on " +
+        new Date().toLocaleDateString();
+    }
+
+    // Update user state with new status
+    setUser({
+      ...user,
+      status: newStatus,
+      statusReason: newStatusReason,
+    });
+
+    // Here you would typically make an API call to update the user status
+    console.log(`User status changed to: ${newStatus}`);
   };
 
   const getStatusColor = (status: Status) => {
@@ -163,6 +312,32 @@ const UserDetails = () => {
     }
   };
 
+  const getPreferenceIcon = (preference: PreferenceType) => {
+    switch (preference) {
+      case "males-only":
+        return <User className="mr-1 h-4 w-4" />;
+      case "females-only":
+        return <User className="mr-1 h-4 w-4" />;
+      case "everyone":
+        return <Users className="mr-1 h-4 w-4" />;
+      default:
+        return <User className="mr-1 h-4 w-4" />;
+    }
+  };
+
+  const getPreferenceText = (preference: PreferenceType) => {
+    switch (preference) {
+      case "males-only":
+        return "Males Only";
+      case "females-only":
+        return "Females Only";
+      case "everyone":
+        return "Everyone";
+      default:
+        return preference;
+    }
+  };
+
   const getPaymentTypeColor = (type: PaymentType) => {
     switch (type.toLowerCase()) {
       case "subscription":
@@ -174,8 +349,19 @@ const UserDetails = () => {
     }
   };
 
-  const handleMatchClick = (matchId: number) => {
-    router.push(`/dashboard/user/${matchId}`);
+  const getCallStatusColor = (status: CallStatus) => {
+    switch (status) {
+      case "completed":
+        return "bg-green-600/10 text-green-600";
+      case "upcoming":
+        return "bg-blue-600/10 text-blue-600";
+      case "canceled":
+        return "bg-rose-600/10 text-rose-600";
+      case "rescheduled":
+        return "bg-amber-600/10 text-amber-600";
+      default:
+        return "bg-gray-600/10 text-gray-600";
+    }
   };
 
   const handlePlaceClick = (placeId: number) => {
@@ -183,7 +369,89 @@ const UserDetails = () => {
   };
 
   // Determine if we need to show status reason
+
+  const rescheduledBookingsCount = user.callBookings.filter(
+    (booking) => booking.rescheduled,
+  ).length;
+  const upcomingBookingsCount = user.callBookings.filter(
+    (booking) => booking.status === "upcoming",
+  ).length;
+
+  const handleMatchClick = (matchId: number) => {
+    router.push(`/dashboard/user/${matchId}`);
+  };
+
   const showStatusReason = user.status !== "active" && user.statusReason;
+
+  const renderStatusActionButtons = () => {
+    switch (user.status) {
+      case "active":
+        return (
+          <div className="mt-4 flex w-full flex-wrap gap-3">
+            <Button
+              variant="warning"
+              className="flex items-center gap-2"
+              onClick={() => handleStatusChange("suspended")}
+            >
+              <AlertTriangle size={16} />
+              Suspend Account
+            </Button>
+            <Button
+              variant="destructive"
+              className="flex items-center gap-2"
+              onClick={() => handleStatusChange("blacklisted")}
+            >
+              <Ban size={16} />
+              Blacklist Account
+            </Button>
+          </div>
+        );
+      case "suspended":
+        return (
+          <div className="mt-4 flex w-full flex-wrap gap-3">
+            <Button
+              variant="default"
+              className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
+              onClick={() => handleStatusChange("active")}
+            >
+              <CheckCircle size={16} />
+              Activate Account
+            </Button>
+            <Button
+              variant="destructive"
+              className="flex items-center gap-2"
+              onClick={() => handleStatusChange("blacklisted")}
+            >
+              <Ban size={16} />
+              Blacklist Account
+            </Button>
+          </div>
+        );
+      case "blacklisted":
+        return (
+          <div className="mt-4 flex w-full flex-wrap gap-3">
+            <Button
+              variant="default"
+              className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
+              onClick={() => handleStatusChange("active")}
+            >
+              <CheckCircle size={16} />
+              Activate Account
+            </Button>
+            <Button
+              variant="warning"
+              className="flex items-center gap-2"
+              onClick={() => handleStatusChange("suspended")}
+            >
+              <AlertTriangle size={16} />
+              Suspend Account
+            </Button>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="mx-auto w-full space-y-6 px-4">
@@ -210,7 +478,7 @@ const UserDetails = () => {
               height={200}
               className="h-28 w-28 rounded-full object-cover"
             />
-            <div className="flex items-start justify-between">
+            <div className="flex w-full flex-wrap items-start gap-4 justify-between">
               <div>
                 <h3 className="text-2xl font-bold">{user.name}</h3>
                 <p className="text-muted-foreground">{user.email}</p>
@@ -221,7 +489,13 @@ const UserDetails = () => {
                   {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
                 </Badge>
                 <Badge className={getPaymentTypeColor(user.paymentInfo.type)}>
-                  {user.paymentInfo.type === "subscription" ? "Subscribed" : "Pay-as-you-go"}
+                  {user.paymentInfo.type === "subscription"
+                    ? "Subscribed"
+                    : "Pay-as-you-go"}
+                </Badge>
+                <Badge className="flex items-center bg-indigo-600/10 text-indigo-600">
+                  {getPreferenceIcon(user.preference)}
+                  {getPreferenceText(user.preference)}
                 </Badge>
               </div>
             </div>
@@ -241,7 +515,7 @@ const UserDetails = () => {
                 <AlertDescription>{user.statusReason}</AlertDescription>
               </Alert>
             )}
-
+            {renderStatusActionButtons()}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-muted-foreground">Location</p>
@@ -284,11 +558,11 @@ const UserDetails = () => {
 
             {/* Payment Info Card */}
             <Card className="border border-muted p-4">
-              <div className="flex items-center gap-2 mb-3">
+              <div className="mb-3 flex items-center gap-2">
                 <CreditCard className="h-5 w-5 text-primary" />
                 <h4 className="font-medium">Payment Information</h4>
               </div>
-              
+
               {user.paymentInfo.type === "subscription" ? (
                 <div className="space-y-2">
                   <div className="flex justify-between">
@@ -296,16 +570,28 @@ const UserDetails = () => {
                     <span className="font-medium">Monthly Subscription</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Amount</span>
-                    <span className="font-medium">{user.paymentInfo.amount}/month</span>
+                    <span className="text-sm text-muted-foreground">
+                      Amount
+                    </span>
+                    <span className="font-medium">
+                      {user.paymentInfo.amount}/month
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Last Payment</span>
-                    <span className="font-medium">{user.paymentInfo.lastPayment}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Last Payment
+                    </span>
+                    <span className="font-medium">
+                      {user.paymentInfo.lastPayment}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Next Billing</span>
-                    <span className="font-medium">{user.paymentInfo.nextBilling}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Next Billing
+                    </span>
+                    <span className="font-medium">
+                      {user.paymentInfo.nextBilling}
+                    </span>
                   </div>
                 </div>
               ) : (
@@ -315,16 +601,28 @@ const UserDetails = () => {
                     <span className="font-medium">Pay-as-you-go</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Total Spent</span>
-                    <span className="font-medium">{user.paymentInfo.amount}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Total Spent
+                    </span>
+                    <span className="font-medium">
+                      {user.paymentInfo.amount}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Last Payment</span>
-                    <span className="font-medium">{user.paymentInfo.lastPayment}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Last Payment
+                    </span>
+                    <span className="font-medium">
+                      {user.paymentInfo.lastPayment}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Calls Made</span>
-                    <span className="font-medium">{user.paymentInfo.callsMade}</span>
+                    <span className="text-sm text-muted-foreground">
+                      Calls Made
+                    </span>
+                    <span className="font-medium">
+                      {user.paymentInfo.callsMade}
+                    </span>
                   </div>
                   {/* <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Rate</span>
@@ -333,8 +631,39 @@ const UserDetails = () => {
                 </div>
               )}
             </Card>
+            <Card className="border border-muted p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <Phone className="h-5 w-5 text-primary" />
+                <h4 className="font-medium">Call Bookings Summary</h4>
+              </div>
 
-            <div>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    Total Bookings
+                  </span>
+                  <span className="font-medium">
+                    {user.callBookings.length}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    Upcoming Calls
+                  </span>
+                  <span className="font-medium">{upcomingBookingsCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    Rescheduled Calls
+                  </span>
+                  <span className="font-medium">
+                    {rescheduledBookingsCount}
+                  </span>
+                </div>
+              </div>
+            </Card>
+
+            {/* <div>
               <h4 className="mb-2 font-medium">Recent Matches</h4>
               <div className="space-y-2">
                 {user.matchHistory.map((match) => (
@@ -359,7 +688,7 @@ const UserDetails = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
         <Card className="border-0">
@@ -457,6 +786,137 @@ const UserDetails = () => {
               />
             ))}
           </div>
+        </CardContent>
+      </Card>
+      <Card className="border-0">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CalendarClock className="h-5 w-5" />
+            Call Bookings
+          </CardTitle>
+          <CardDescription>Upcoming and past call appointments</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Match</TableHead>
+                <TableHead>Original Date</TableHead>
+                <TableHead>Scheduled Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Rescheduled</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {user.callBookings.map((booking) => (
+                <TableRow key={booking.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src={booking.matchImageURL}
+                        alt={booking.matchName}
+                        width={32}
+                        height={32}
+                        className="h-8 w-8 rounded-full object-cover"
+                      />
+                      <span>{booking.matchName}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{booking.originalDate}</TableCell>
+                  <TableCell>{booking.scheduledDate}</TableCell>
+                  <TableCell>
+                    <Badge className={getCallStatusColor(booking.status)}>
+                      {booking.status.charAt(0).toUpperCase() +
+                        booking.status.slice(1)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{booking.duration || "-"}</TableCell>
+                  <TableCell>
+                    {booking.rescheduled ? (
+                      <Badge className="bg-amber-600/10 text-amber-600">
+                        Yes
+                      </Badge>
+                    ) : (
+                      <span>No</span>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+      <Card className="border-0">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Detailed Match History
+          </CardTitle>
+          <CardDescription>
+            Complete history of past matches with call details
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Match</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Rating</TableHead>
+                <TableHead>Notes</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {user.matchHistory.map((match) => (
+                <TableRow
+                  key={match.id}
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => handleMatchClick(match.id)}
+                >
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src={match.imageURL}
+                        alt={match.name}
+                        width={32}
+                        height={32}
+                        className="h-8 w-8 rounded-full object-cover"
+                      />
+                      <span>{match.name}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{match.date}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      {match.duration || "N/A"}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <span
+                          key={i}
+                          className={
+                            i < (match.rating || 0)
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {match.notes || "-"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>
