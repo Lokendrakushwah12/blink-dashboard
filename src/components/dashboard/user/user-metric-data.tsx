@@ -99,7 +99,7 @@ const UserMetricData = () => {
           setTimeframe(value as "daily" | "weekly" | "monthly")
         }
       >
-        <TabsList className="mb-4 bg-transparent border-b rounded-none w-full flex justify-start items-start">
+        <TabsList className="mb-4 bg-transparent border-b rounded-none my-0 w-full flex justify-start items-start">
           <TabsTrigger value="daily">Daily</TabsTrigger>
           <TabsTrigger value="weekly">Weekly</TabsTrigger>
           <TabsTrigger value="monthly">Monthly</TabsTrigger>
