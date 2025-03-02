@@ -61,7 +61,7 @@ export default function RecentSignupsPage() {
       email: `user${i + 1}@example.com`,
       phone: `+1234567${i.toString().padStart(4, "0")}`,
       city: "Pune",
-      country: "IN",
+      country: "India",
       photo: `https://api.slingacademy.com/public/sample-users/${(i % 5) + 1}.png`,
     }));
     setUsers(mockUsers);

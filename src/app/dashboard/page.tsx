@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Tickets } from "lucide-react";
 import Recentsignups from "./@recent_signups/page";
-import WorldStats from "./@world_stats/page";
+import SignupStats from "./@signup_stats/page";
 import GenderStats from "./@gender_stats/page";
 
 const DashboardPage = () => {
@@ -92,7 +92,7 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="col-span-7 md:col-span-4">{GenderStats()}</div>
         <div className="col-span-7 md:col-span-3">{Recentsignups()}</div>
-        <div className="col-span-7">{WorldStats()}</div>
+        <div className="col-span-7">{SignupStats()}</div>
       </div>
     </div>
   );

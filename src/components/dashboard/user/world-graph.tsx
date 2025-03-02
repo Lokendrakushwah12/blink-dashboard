@@ -153,10 +153,9 @@ export function WorldGraph() {
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>World Chart</CardTitle>
+          <CardTitle>Signups</CardTitle>
           <CardDescription>
-            An interactive bar chart that shows the number of users in the world
-            and city
+            An interactive bar chart that shows the number of users registered per day
           </CardDescription>
         </div>
       </CardHeader>
